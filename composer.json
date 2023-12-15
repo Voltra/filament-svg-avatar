@@ -1,29 +1,27 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "voltra/filament-svg-avatar",
+    "description": " Change the default avatar url provider with one for inline SVGs",
     "keywords": [
-        ":vendor_name",
+        "Voltra",
         "laravel",
-        ":package_slug"
+        "filament-svg-avatar"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/voltra/filament-svg-avatar",
     "support": {
-        "issues": "https://github.com/:vendor_slug/:package_slug/issues",
-        "source": "https://github.com/:vendor_slug/:package_slug"
+        "issues": "https://github.com/voltra/filament-svg-avatar/issues",
+        "source": "https://github.com/voltra/filament-svg-avatar"
     },
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Voltra",
+            "email": "ludwig.guerin.98@gmx.fr",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.1",
         "filament/filament": "^3.0",
-        "filament/forms": "^3.0",
-        "filament/tables": "^3.0",
         "spatie/laravel-package-tools": "^1.15.0",
         "illuminate/contracts": "^10.0"
     },
@@ -37,18 +35,17 @@
         "pestphp/pest-plugin-laravel": "^2.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "spatie/laravel-ray": "^1.26"
+        "phpstan/phpstan-phpunit": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "Voltra\\FilamentSvgAvatar\\": "src/",
+            "Voltra\\FilamentSvgAvatar\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/"
+            "Voltra\\FilamentSvgAvatar\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -68,10 +65,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Voltra\\FilamentSvgAvatar\\FilamentSvgAvatarServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "FilamentSvgAvatar": "Voltra\\FilamentSvgAvatar\\Facades\\FilamentSvgAvatar"
             }
         }
     },
