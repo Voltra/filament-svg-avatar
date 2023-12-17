@@ -9,7 +9,7 @@ use Voltra\FilamentSvgAvatar\FilamentSvgAvatarServiceProvider;
 use Voltra\FilamentSvgAvatar\Services\FilamentSvgAvatarService;
 
 describe(FilamentSvgAvatarServiceProvider::class, function () {
-    beforeEach(function() {
+    beforeEach(function () {
         App::forgetInstances();
         App::flush();
     });
@@ -25,7 +25,7 @@ describe(FilamentSvgAvatarServiceProvider::class, function () {
     it('registers a binding for the SVG avatar service', function () {
         try {
             expect(resolve(SvgAvatarServiceContract::class))->toBeNull();
-        } catch(Throwable $e) {
+        } catch (Throwable $e) {
             expect($e)->toBeInstanceOf(BindingResolutionException::class);
         }
 
@@ -35,12 +35,11 @@ describe(FilamentSvgAvatarServiceProvider::class, function () {
         expect($instance)->not->toBeNull();
     });
 
-    it('scopes the SVG avatar service to the default implementation', function() {
+    it('scopes the SVG avatar service to the default implementation', function () {
         App::register(FilamentSvgAvatarServiceProvider::class);
 
         $instance = resolve(SvgAvatarServiceContract::class);
         expect($instance)->toBeInstanceOf(FilamentSvgAvatarService::class);
-
 
         $instance2 = resolve(SvgAvatarServiceContract::class);
         expect($instance2)->toBe($instance);

@@ -18,7 +18,6 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
 {
     /**
      * The width/height (in pixels) of the avatar SVG to generate
-     * @var int $svgSize
      */
     protected int $svgSize = 500;
 
