@@ -1,20 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Voltra\FilamentSvgAvatar;
 
-use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
-use Filament\Support\Facades\FilamentAsset;
-use Filament\Support\Facades\FilamentIcon;
-use Illuminate\Filesystem\Filesystem;
-use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Voltra\FilamentSvgAvatar\Commands\FilamentSvgAvatarCommand;
-use Voltra\FilamentSvgAvatar\Testing\TestsFilamentSvgAvatar;
+use Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract;
+use Voltra\FilamentSvgAvatar\Services\FilamentSvgAvatarService;
 
 class FilamentSvgAvatarServiceProvider extends PackageServiceProvider
 {
@@ -30,65 +25,24 @@ class FilamentSvgAvatarServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package->name(static::$name)
-            ->hasCommands($this->getCommands())
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
-                    ->publishConfigFile()
-                    ->publishMigrations()
-                    ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('voltra/filament-svg-avatar');
+                    ->askToStarRepoOnGitHub($this->getRepoName());
             });
-
-        $configFileName = $package->shortName();
-
-        if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
-            $package->hasConfigFile();
-        }
-
-        if (file_exists($package->basePath('/../database/migrations'))) {
-            $package->hasMigrations($this->getMigrations());
-        }
-
-        if (file_exists($package->basePath('/../resources/lang'))) {
-            $package->hasTranslations();
-        }
-
-        if (file_exists($package->basePath('/../resources/views'))) {
-            $package->hasViews(static::$viewNamespace);
-        }
     }
 
     public function packageRegistered(): void
     {
+        $this->app->scoped(SvgAvatarServiceContract::class, FilamentSvgAvatarService::class);
     }
 
     public function packageBooted(): void
     {
-        // Asset Registration
-        FilamentAsset::register(
-            $this->getAssets(),
-            $this->getAssetPackageName()
-        );
+    }
 
-        FilamentAsset::registerScriptData(
-            $this->getScriptData(),
-            $this->getAssetPackageName()
-        );
-
-        // Icon Registration
-        FilamentIcon::register($this->getIcons());
-
-        // Handle Stubs
-        if (app()->runningInConsole()) {
-            foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
-                $this->publishes([
-                    $file->getRealPath() => base_path("stubs/filament-svg-avatar/{$file->getFilename()}"),
-                ], 'filament-svg-avatar-stubs');
-            }
-        }
-
-        // Testing
-        Testable::mixin(new TestsFilamentSvgAvatar());
+    protected function getRepoName(): string
+    {
+        return 'Voltra/filament-svg-avatar';
     }
 
     protected function getAssetPackageName(): ?string
@@ -101,11 +55,7 @@ class FilamentSvgAvatarServiceProvider extends PackageServiceProvider
      */
     protected function getAssets(): array
     {
-        return [
-            // AlpineComponent::make('filament-svg-avatar', __DIR__ . '/../resources/dist/components/filament-svg-avatar.js'),
-            Css::make('filament-svg-avatar-styles', __DIR__ . '/../resources/dist/filament-svg-avatar.css'),
-            Js::make('filament-svg-avatar-scripts', __DIR__ . '/../resources/dist/filament-svg-avatar.js'),
-        ];
+        return [];
     }
 
     /**
@@ -113,9 +63,7 @@ class FilamentSvgAvatarServiceProvider extends PackageServiceProvider
      */
     protected function getCommands(): array
     {
-        return [
-            FilamentSvgAvatarCommand::class,
-        ];
+        return [];
     }
 
     /**
@@ -147,8 +95,6 @@ class FilamentSvgAvatarServiceProvider extends PackageServiceProvider
      */
     protected function getMigrations(): array
     {
-        return [
-            'create_filament-svg-avatar_table',
-        ];
+        return [];
     }
 }

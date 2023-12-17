@@ -1,14 +1,29 @@
 {
     "preset": "laravel",
     "rules": {
-        "blank_line_before_statement": true,
-        "concat_space": {
-            "spacing": "one"
+        "array_push": true,
+        "assign_null_coalescing_to_coalesce_equal": true,
+        "attribute_empty_parentheses": true,
+        "backtick_to_shell_exec": true,
+        "declare_strict_types": true,
+        "dir_constant": true,
+        "echo_tag_syntax": {
+            "format": "short"
         },
-        "method_argument_space": true,
-        "single_trait_insert_per_statement": true,
-        "types_spaces": {
-            "space": "single"
-        }
+        "encoding": true,
+        "explicit_string_variable": true,
+        "full_opening_tag": true,
+        "function_typehint_space": true,
+        "global_namespace_import": {
+            "import_classes": false,
+            "import_constants": false,
+            "import_functions": false
+        },
+        "is_null": true,
+        "lambda_not_used_import": true,
+        "mb_str_functions": true,
+        "method_chaining_indentation": true,
+        "modernize_strpos": true,
+        "ordered_class_elements": true
     }
 }

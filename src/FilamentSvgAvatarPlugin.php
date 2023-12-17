@@ -1,20 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Voltra\FilamentSvgAvatar;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Voltra\FilamentSvgAvatar\Filament\AvatarProviders\SvgAvatarsProviders;
 
+/**
+ * Use this package as a panel plugin that automatically registers the default avatar provider
+ */
 class FilamentSvgAvatarPlugin implements Plugin
 {
-    public function getId(): string
+    const ID = 'filament-svg-avatar';
+
+    final public function getId(): string
     {
-        return 'filament-svg-avatar';
+        return self::ID;
     }
 
     public function register(Panel $panel): void
     {
-        //
+        $panel->defaultAvatarProvider(SvgAvatarsProviders::class);
     }
 
     public function boot(Panel $panel): void
@@ -30,7 +38,7 @@ class FilamentSvgAvatarPlugin implements Plugin
     public static function get(): static
     {
         /** @var static $plugin */
-        $plugin = filament(app(static::class)->getId());
+        $plugin = filament(self::ID);
 
         return $plugin;
     }
