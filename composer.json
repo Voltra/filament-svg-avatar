@@ -1,10 +1,15 @@
 {
     "name": "voltra/filament-svg-avatar",
+	"version": "1.0.0",
+	"type": "library",
     "description": " Change the default avatar url provider with one for inline SVGs",
     "keywords": [
         "Voltra",
         "laravel",
-        "filament-svg-avatar"
+		"filament",
+		"laravel-filament",
+        "filament-svg-avatar",
+		"avatar"
     ],
     "homepage": "https://github.com/voltra/filament-svg-avatar",
     "support": {
@@ -52,11 +57,11 @@
     },
     "scripts": {
         "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
-        "analyse": "vendor/bin/phpstan analyse",
-        "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint",
-        "update-facade": "vendor/bin/facade.php Voltra\\FilamentSvgAvatar\\Facades\\FilamentSvgAvatar"
+        "analyse": "@php ./vendor/bin/phpstan analyse",
+        "test": "@php ./vendor/bin/pest",
+        "test-coverage": "@php ./vendor/bin/pest --coverage",
+        "format": "@php ./vendor/bin/pint",
+        "update-facade": "@php ./vendor/bin/facade.php Voltra\\FilamentSvgAvatar\\Facades\\FilamentSvgAvatar"
     },
     "config": {
         "sort-packages": true,
