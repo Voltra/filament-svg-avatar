@@ -1,4 +1,4 @@
-![Filament Svg Avatar: Change the default avatar url provider with one for inline SVGs](https://github.com/Voltra/filament-svg-avatar/blob/main/art/banner.jpeg)
+![Filament Svg Avatar: Change the default avatar url provider with one for inline SVGs](https://raw.githubusercontent.com/Voltra/filament-svg-avatar/main/art/banner.jpeg)
 
 #  voltra/filament-svg-avatar
 
