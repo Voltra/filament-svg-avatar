@@ -21,6 +21,8 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     protected int $svgSize = 500;
 
+    //
+
     /**
      * {@inheritDoc}
      */
