@@ -13,6 +13,7 @@ use Spatie\Color\Contrast;
 use Spatie\Color\Hex;
 use Spatie\Color\Rgb;
 use Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract;
+use Voltra\FilamentSvgAvatar\FilamentSvgAvatarPlugin;
 
 class FilamentSvgAvatarService implements SvgAvatarServiceContract
 {
@@ -21,7 +22,20 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     protected int $svgSize = 500;
 
-    //
+    /**
+     * Override for the background color
+     */
+    protected ?Color $backgroundColor = null;
+
+    /**
+     * Override for the text color
+     */
+    protected ?Color $textColor = null;
+
+    /**
+     * Whether to disallow the plugin from overriding colors
+     */
+    protected bool $disallowPluginOverride = false;
 
     /**
      * {@inheritDoc}
@@ -47,7 +61,7 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
         $fontColor = (string) $this->getTextColor();
         $font = $this->getFontFamily();
 
-        $size = $this->svgSize;
+        $size = $this->getSize();
         $textSize = floor($size / 2);
         $dy = $this->getTextDy();
 
@@ -76,7 +90,14 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     public function getBackgroundColor(): Color
     {
-        return Rgb::fromString('rgb('.FilamentColor::getColors()['primary'][500].')');
+        if ($this->backgroundColor) {
+            return $this->backgroundColor;
+        }
+
+        $bg = $this->disallowPluginOverride ? null : $this->getPlugin()?->getBackgroundColor();
+
+        return $bg
+            ?? Rgb::fromString('rgb('.FilamentColor::getColors()['primary'][500].')');
     }
 
     /**
@@ -84,6 +105,18 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     public function getTextColor(): Color
     {
+        if ($this->textColor) {
+            return $this->textColor;
+        }
+
+        if (! $this->disallowPluginOverride) {
+            $textCol = $this->getPlugin()?->getTextColor();
+
+            if (! empty($textCol)) {
+                return $textCol;
+            }
+        }
+
         $bg = $this->getBackgroundColor();
         $white = Hex::fromString('#fff');
 
@@ -117,5 +150,22 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
     public function getTextDy(): string
     {
         return '.1em';
+    }
+
+    public function getSize(): int {
+        return $this->svgSize;
+    }
+
+    protected function getPlugin(): ?FilamentSvgAvatarPlugin
+    {
+        $id = FilamentSvgAvatarPlugin::ID;
+
+        if (! Filament::hasPlugin($id)) {
+            return null;
+        }
+
+        $plugin = Filament::getPlugin($id);
+
+        return $plugin instanceof FilamentSvgAvatarPlugin ? $plugin : null;
     }
 }

@@ -16,20 +16,12 @@ describe(SvgAvatarServiceContract::class, function () {
     it('can be resolved as the overridden service instance', function () {
         App::register(FilamentSvgAvatarServiceProvider::class);
 
-        class Service extends FilamentSvgAvatarService
+        class CService extends FilamentSvgAvatarService
         {
         }
 
-        class Provider extends \Illuminate\Support\ServiceProvider
-        {
-            public function register(): void
-            {
-                $this->app->scoped(SvgAvatarServiceContract::class, Service::class);
-            }
-        }
+        App::scoped(SvgAvatarServiceContract::class, CService::class);
 
-        App::register(Provider::class);
-
-        expect(resolve(SvgAvatarServiceContract::class))->toBeInstanceOf(Service::class);
+        expect(resolve(SvgAvatarServiceContract::class))->toBeInstanceOf(CService::class);
     });
 });

@@ -7,7 +7,6 @@
     colors="true"
     processIsolation="false"
     stopOnFailure="false"
-    executionOrder="random"
     failOnWarning="true"
     failOnRisky="true"
     failOnEmptyTestSuite="true"
@@ -15,6 +14,7 @@
     cacheDirectory=".phpunit.cache"
     backupStaticProperties="false"
 >
+    <!-- executionOrder="random" -->
     <testsuites>
         <testsuite name="Voltra Test Suite">
             <directory>tests</directory>

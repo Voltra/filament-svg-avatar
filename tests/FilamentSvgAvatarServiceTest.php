@@ -2,7 +2,13 @@
 
 declare(strict_types=1);
 
+use Filament\Facades\Filament;
+use Filament\Panel;
 use Illuminate\Support\Facades\App;
+use Spatie\Color\Color;
+use Spatie\Color\Hex;
+use Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract;
+use Voltra\FilamentSvgAvatar\FilamentSvgAvatarPlugin;
 use Voltra\FilamentSvgAvatar\FilamentSvgAvatarServiceProvider;
 use Voltra\FilamentSvgAvatar\Services\FilamentSvgAvatarService;
 
@@ -11,10 +17,15 @@ describe(FilamentSvgAvatarService::class, function () {
         App::forgetInstances();
         App::flush();
         App::register(FilamentSvgAvatarServiceProvider::class);
+        Mockery::close();
+    });
+
+    afterEach(function () {
+        Mockery::close();
     });
 
     it('generates the right minified SVG markup', function (string $bg, string $fg, string $text, string $font) {
-        $panel = new class() extends \Filament\Panel
+        $panel = new class() extends Panel
         {
         };
 
@@ -22,7 +33,7 @@ describe(FilamentSvgAvatarService::class, function () {
             ->default()
             ->font($font);
 
-        \Filament\Facades\Filament::setCurrentPanel($panel);
+        Filament::setCurrentPanel($panel);
 
         \Filament\Support\Facades\FilamentColor::shouldReceive('getColors')
             ->twice() // one for the bg, one for the fg
@@ -60,8 +71,171 @@ describe(FilamentSvgAvatarService::class, function () {
         'black' => ['0,0,0', '#ffffff', 'SF', 'Poppins'], // Contrast: 21
         'turquoise' => ['84,216,200', '#000000', 'VN', 'StuffFont'], // Contrast: 12.03
         'lavender' => ['119,104,174', '#ffffff', 'PV', 'Xyz'], // Contrast: 4.79 (vs 4.31)
-        'lime' => ['135,226,9', '#000000', 'PV', 'Xyz'], // Contrast: 12.91
-        'skyblue' => ['107,234,251', '#000000', 'PV', 'Xyz'], // Contrast: 14.78
-        'darkblue' => ['46,17,100', '#ffffff', 'PV', 'Xyz'], // Contrast: 15.21
+        'lime' => ['135,226,9', '#000000', 'AB', 'Xyz'], // Contrast: 12.91
+        'skyblue' => ['107,234,251', '#000000', 'CD', 'Xyz'], // Contrast: 14.78
+        'darkblue' => ['46,17,100', '#ffffff', 'EF', 'Xyz'], // Contrast: 15.21
     ]);
+
+    it('can have its background color customized through the panel plugin', function () {
+        $panel = new class() extends Panel
+        {
+        };
+        $color = Hex::fromString('#f0f0f0');
+        $panel->plugin(FilamentSvgAvatarPlugin::make()->backgroundColor($color));
+        Filament::setCurrentPanel($panel);
+
+        /**
+         * @var FilamentSvgAvatarService $service
+         */
+        $service = resolve(FilamentSvgAvatarService::class);
+
+        expect($service->getBackgroundColor())->toBe($color);
+    });
+
+    it('can have its text color customized through the panel plugin', function () {
+        $panel = new class() extends Panel
+        {
+        };
+        $color = Hex::fromString('#3b5998');
+        $panel->plugin(FilamentSvgAvatarPlugin::make()->textColor($color));
+        Filament::setCurrentPanel($panel);
+
+        /**
+         * @var FilamentSvgAvatarService $service
+         */
+        $service = resolve(FilamentSvgAvatarService::class);
+
+        expect($service->getTextColor())->toBe($color);
+    });
+
+    it('can be overridden to disallow panel overrides', function () {
+        $panel = new class() extends Panel
+        {
+        };
+
+        $pluginMock = Mockery::mock(FilamentSvgAvatarPlugin::class);
+
+        $allowedMethods = ['backgroundColor', 'textColor', 'getId', 'register', 'boot'];
+
+        foreach ($allowedMethods as $allowedMethod) {
+//            $pluginMock->shouldReceive($allowedMethod)->passthru();
+            $pluginMock->expects($allowedMethod)->passthru()->zeroOrMoreTimes();
+        }
+
+        $forbiddenMethods = ['getTextColor', 'getBackgroundColor'];
+
+        foreach ($forbiddenMethods as $forbiddenMethod) {
+//            $pluginMock->shouldReceive($forbiddenMethod)->never();
+            $pluginMock->expects($forbiddenMethod)->never();
+        }
+
+        /** @var FilamentSvgAvatarPlugin $pluginMock */
+        $pluginMock
+            ->backgroundColor(Hex::fromString('#e9ebee'))
+            ->textColor(Hex::fromString('#3b5998'));
+
+        $panel->plugin($pluginMock);
+        Filament::setCurrentPanel($panel);
+
+        class SService extends FilamentSvgAvatarService
+        {
+            protected bool $disallowPluginOverride = true;
+        }
+
+        App::scoped(SvgAvatarServiceContract::class, SService::class);
+
+        /**
+         * @var SvgAvatarServiceContract $service
+         */
+        $service = resolve(SvgAvatarServiceContract::class);
+
+        $service->getTextColor();
+        $service->getBackgroundColor();
+    });
+
+    it('can be overridden to have a fixed background color', function() {
+        function sservice2() {
+            return Hex::fromString('#3c3f41');
+        }
+
+        $color = sservice2();
+
+        class SService2 extends FilamentSvgAvatarService
+        {
+            public function __construct()
+            {
+                $this->backgroundColor = sservice2();
+            }
+        }
+
+
+        App::scoped(SvgAvatarServiceContract::class, SService2::class);
+
+        /**
+         * @var FilamentSvgAvatarService $service
+         */
+        $service = resolve(SvgAvatarServiceContract::class);
+
+        expect($service->getBackgroundColor())->toEqual($color);
+    });
+
+    it('can be overridden to have a fixed text color', function() {
+        function sservice3() {
+            return Hex::fromString('#eb53fe');
+        }
+
+        $color = sservice3();
+
+        class SService3 extends FilamentSvgAvatarService
+        {
+            public function __construct()
+            {
+                $this->textColor = sservice3();
+            }
+        }
+
+
+        App::scoped(SvgAvatarServiceContract::class, SService3::class);
+
+        /**
+         * @var FilamentSvgAvatarService $service
+         */
+        $service = resolve(SvgAvatarServiceContract::class);
+
+        expect($service->getTextColor())->toEqual($color);
+    });
+
+    it('can be overridden to use a different size', function() {
+        $panel = new class() extends Panel
+        {
+        };
+        Filament::setCurrentPanel($panel);
+
+        function sservice4() {
+            return 168;
+        }
+
+        $size = sservice4();
+
+        class SService4 extends FilamentSvgAvatarService
+        {
+            public function __construct()
+            {
+                $this->svgSize = sservice4();
+            }
+        }
+
+
+        App::scoped(SvgAvatarServiceContract::class, SService4::class);
+
+        /**
+         * @var FilamentSvgAvatarService $service
+         */
+        $service = resolve(SvgAvatarServiceContract::class);
+
+        $svg = $service->svg('TE');
+
+        expect($svg)->toContain(sprintf('<rect x="0" y="0" width="%d" height="%d"', $size, $size))
+            ->and($svg)->toContain(sprintf('<svg width="%dpx" height="%dpx"', $size, $size));
+    });
 });
