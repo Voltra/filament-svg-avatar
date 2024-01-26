@@ -17,8 +17,6 @@ class SvgAvatarsProviders implements AvatarProvider
 
     /**
      * Get the SVG of the avatar for the given record
-     * @param Model|Authenticatable $record
-     * @return string
      */
     public function getSvg(Model|Authenticatable $record): string
     {

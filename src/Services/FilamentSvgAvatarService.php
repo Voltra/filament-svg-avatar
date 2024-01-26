@@ -8,6 +8,7 @@ use Filament\Facades\Filament;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 use Spatie\Color\Color;
 use Spatie\Color\Contrast;
 use Spatie\Color\Hex;
@@ -36,6 +37,11 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      * Whether to disallow the plugin from overriding colors
      */
     protected bool $disallowPluginOverride = false;
+
+    /**
+     * Offset of the text in the SVG
+     */
+    protected string $textDy = '.1em';
 
     /**
      * {@inheritDoc}
@@ -90,6 +96,12 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     public function getBackgroundColor(): Color
     {
+        $configValue = Config::get('filament-svg-avatar.backgroundColor', null);
+
+        if (! empty($configValue)) {
+            return Hex::fromString($configValue);
+        }
+
         if ($this->backgroundColor) {
             return $this->backgroundColor;
         }
@@ -105,6 +117,12 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     public function getTextColor(): Color
     {
+        $configValue = Config::get('filament-svg-avatar.textColor', null);
+
+        if (! empty($configValue)) {
+            return Hex::fromString($configValue);
+        }
+
         if ($this->textColor) {
             return $this->textColor;
         }
@@ -141,6 +159,12 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     public function getFontFamily(): string
     {
+        $configValue = Config::get('filament-svg-avatar.fontFamily', null);
+
+        if (! empty($configValue)) {
+            return $configValue;
+        }
+
         return Filament::getFontFamily();
     }
 
@@ -149,11 +173,12 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     public function getTextDy(): string
     {
-        return '.1em';
+        return Config::get('filament-svg-avatar.textDy', $this->textDy);
     }
 
-    public function getSize(): int {
-        return $this->svgSize;
+    public function getSize(): int
+    {
+        return Config::get('filament-svg-avatar.svgSize', $this->svgSize);
     }
 
     protected function getPlugin(): ?FilamentSvgAvatarPlugin

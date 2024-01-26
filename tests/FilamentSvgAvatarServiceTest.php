@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 use Filament\Facades\Filament;
 use Filament\Panel;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\App;
-use Spatie\Color\Color;
+use Illuminate\Support\Facades\Config;
 use Spatie\Color\Hex;
 use Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract;
 use Voltra\FilamentSvgAvatar\FilamentSvgAvatarPlugin;
@@ -14,10 +15,17 @@ use Voltra\FilamentSvgAvatar\Services\FilamentSvgAvatarService;
 
 describe(FilamentSvgAvatarService::class, function () {
     beforeEach(function () {
-        App::forgetInstances();
-        App::flush();
-        App::register(FilamentSvgAvatarServiceProvider::class);
+        $appSoftReset = \Closure::bind(function (Application $app) {
+            //            $app->forgetInstances();
+            //            $app->flush();
+
+            //            $app->__construct($app->basePath());
+        }, null, Application::class);
+
         Mockery::close();
+        Config::set('filament-svg-avatar', []);
+        $appSoftReset(App::getInstance());
+        App::register(FilamentSvgAvatarServiceProvider::class);
     });
 
     afterEach(function () {
@@ -118,14 +126,14 @@ describe(FilamentSvgAvatarService::class, function () {
         $allowedMethods = ['backgroundColor', 'textColor', 'getId', 'register', 'boot'];
 
         foreach ($allowedMethods as $allowedMethod) {
-//            $pluginMock->shouldReceive($allowedMethod)->passthru();
+            //            $pluginMock->shouldReceive($allowedMethod)->passthru();
             $pluginMock->expects($allowedMethod)->passthru()->zeroOrMoreTimes();
         }
 
         $forbiddenMethods = ['getTextColor', 'getBackgroundColor'];
 
         foreach ($forbiddenMethods as $forbiddenMethod) {
-//            $pluginMock->shouldReceive($forbiddenMethod)->never();
+            //            $pluginMock->shouldReceive($forbiddenMethod)->never();
             $pluginMock->expects($forbiddenMethod)->never();
         }
 
@@ -153,8 +161,9 @@ describe(FilamentSvgAvatarService::class, function () {
         $service->getBackgroundColor();
     });
 
-    it('can be overridden to have a fixed background color', function() {
-        function sservice2() {
+    it('can be overridden to have a fixed background color', function () {
+        function sservice2()
+        {
             return Hex::fromString('#3c3f41');
         }
 
@@ -168,7 +177,6 @@ describe(FilamentSvgAvatarService::class, function () {
             }
         }
 
-
         App::scoped(SvgAvatarServiceContract::class, SService2::class);
 
         /**
@@ -179,8 +187,9 @@ describe(FilamentSvgAvatarService::class, function () {
         expect($service->getBackgroundColor())->toEqual($color);
     });
 
-    it('can be overridden to have a fixed text color', function() {
-        function sservice3() {
+    it('can be overridden to have a fixed text color', function () {
+        function sservice3()
+        {
             return Hex::fromString('#eb53fe');
         }
 
@@ -194,7 +203,6 @@ describe(FilamentSvgAvatarService::class, function () {
             }
         }
 
-
         App::scoped(SvgAvatarServiceContract::class, SService3::class);
 
         /**
@@ -205,13 +213,14 @@ describe(FilamentSvgAvatarService::class, function () {
         expect($service->getTextColor())->toEqual($color);
     });
 
-    it('can be overridden to use a different size', function() {
+    it('can be overridden to use a different size', function () {
         $panel = new class() extends Panel
         {
         };
         Filament::setCurrentPanel($panel);
 
-        function sservice4() {
+        function sservice4()
+        {
             return 168;
         }
 
@@ -225,7 +234,6 @@ describe(FilamentSvgAvatarService::class, function () {
             }
         }
 
-
         App::scoped(SvgAvatarServiceContract::class, SService4::class);
 
         /**
@@ -237,5 +245,180 @@ describe(FilamentSvgAvatarService::class, function () {
 
         expect($svg)->toContain(sprintf('<rect x="0" y="0" width="%d" height="%d"', $size, $size))
             ->and($svg)->toContain(sprintf('<svg width="%dpx" height="%dpx"', $size, $size));
+    });
+
+    it('can be overridden to use a global background color via config, and it takes precedence over other overrides', function () {
+        $color = '#3c3f41';
+        Config::set('filament-svg-avatar.backgroundColor', $color);
+
+        $expected = Hex::fromString($color);
+
+        $panel = new class() extends Panel
+        {
+        };
+        Filament::setCurrentPanel($panel);
+
+        class SService5 extends FilamentSvgAvatarService
+        {
+            public function __construct()
+            {
+                $this->backgroundColor = Hex::fromString('#e9ebee');
+            }
+        }
+
+        App::scoped(SvgAvatarServiceContract::class, SService5::class);
+
+        /**
+         * @var FilamentSvgAvatarService $service
+         */
+        $service = resolve(SvgAvatarServiceContract::class);
+
+        expect($service->getBackgroundColor())->toEqual($expected);
+    });
+
+    it('can be overridden to use a global text color via config, and it takes precedence over other overrides', function () {
+        $color = '#3c3f41';
+        Config::set('filament-svg-avatar.textColor', $color);
+
+        $expected = Hex::fromString($color);
+
+        $panel = new class() extends Panel
+        {
+        };
+        Filament::setCurrentPanel($panel);
+
+        class SService6 extends FilamentSvgAvatarService
+        {
+            public function __construct()
+            {
+                $this->textColor = Hex::fromString('#e9ebee');
+            }
+        }
+
+        App::scoped(SvgAvatarServiceContract::class, SService6::class);
+
+        /**
+         * @var FilamentSvgAvatarService $service
+         */
+        $service = resolve(SvgAvatarServiceContract::class);
+
+        expect($service->getTextColor())->toEqual($expected);
+    });
+
+    it('can be overridden to use a global font-family via config, and it takes precedence over other overrides', function () {
+        $fontFamily = 'Meredith, sans, undertale, serif';
+        Config::set('filament-svg-avatar.fontFamily', $fontFamily);
+
+        $panel = new class() extends Panel
+        {
+        };
+        $panel->font('My font family');
+        Filament::setCurrentPanel($panel);
+
+        App::scoped(SvgAvatarServiceContract::class, FilamentSvgAvatarService::class);
+
+        /**
+         * @var FilamentSvgAvatarService $service
+         */
+        $service = resolve(SvgAvatarServiceContract::class);
+
+        expect($service->getFontFamily())->toEqual($fontFamily);
+    });
+
+    it('can be overridden to use a global text DY via config, and it takes precedence over other overrides', function () {
+        $textDy = '-3rem';
+        Config::set('filament-svg-avatar.textDy', $textDy);
+
+        $panel = new class() extends Panel
+        {
+        };
+        Filament::setCurrentPanel($panel);
+
+        class SService7 extends FilamentSvgAvatarService
+        {
+            public function __construct()
+            {
+                $this->textDy = '2em';
+            }
+        }
+
+        App::scoped(SvgAvatarServiceContract::class, SService7::class);
+
+        /**
+         * @var FilamentSvgAvatarService $service
+         */
+        $service = resolve(SvgAvatarServiceContract::class);
+
+        expect($service->getTextDy())->toEqual($textDy);
+    });
+
+    it('can be overridden to use a global svg size via config, and it takes precedence over other overrides', function () {
+        $svgSize = 2400;
+        Config::set('filament-svg-avatar.svgSize', $svgSize);
+
+        $panel = new class() extends Panel
+        {
+        };
+        Filament::setCurrentPanel($panel);
+
+        class SService8 extends FilamentSvgAvatarService
+        {
+            public function __construct()
+            {
+                $this->svgSize = 120;
+            }
+        }
+
+        App::scoped(SvgAvatarServiceContract::class, SService8::class);
+
+        /**
+         * @var FilamentSvgAvatarService $service
+         */
+        $service = resolve(SvgAvatarServiceContract::class);
+
+        expect($service->getSize())->toEqual($svgSize);
+    });
+
+    it('can be overridden to globally disable panel overrides via config, and it takes precedence over other overrides', function () {
+        Config::set('filament-svg-avatar.disallowPluginOverride', true);
+
+        $panel = new class() extends Panel
+        {
+        };
+
+        $plugin = FilamentSvgAvatarPlugin::make();
+
+        $pluginBg = Hex::fromString('#e9ebee');
+        $pluginFg = Hex::fromString('#3b5998');
+
+        $plugin
+            ->backgroundColor($pluginBg)
+            ->textColor($pluginFg);
+
+        $panel->plugin($plugin);
+        Filament::setCurrentPanel($panel);
+
+        class SService9 extends FilamentSvgAvatarService
+        {
+            protected bool $disallowPluginOverride = false;
+
+            public function __construct()
+            {
+                $this->backgroundColor = Hex::fromString('#000');
+                $this->textColor = Hex::fromString('#fff');
+            }
+
+
+        }
+
+        App::scoped(SvgAvatarServiceContract::class, SService9::class);
+
+        /**
+         * @var SvgAvatarServiceContract $service
+         */
+        $service = resolve(SvgAvatarServiceContract::class);
+
+        expect($service->getTextColor())->not->toBe($pluginFg);
+        expect($service->getBackgroundColor())->not->toBe($pluginBg);
     });
 });
