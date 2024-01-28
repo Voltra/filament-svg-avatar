@@ -192,10 +192,11 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
 
     /**
      * Whether plugin overrides are disallowed
-     * @return bool
      */
-    public function disallowsPluginOverrides(): bool {
+    public function disallowsPluginOverrides(): bool
+    {
         $fromConfig = Config::get('filament-svg-avatar.disallowPluginOverride', $this->disallowPluginOverride) ?? $this->disallowPluginOverride;
+
         return $fromConfig || $this->disallowPluginOverride;
     }
 
