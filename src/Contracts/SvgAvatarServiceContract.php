@@ -13,14 +13,14 @@ interface SvgAvatarServiceContract
     /**
      * Get the initials that are to be displayed on the avatar
      *
-     * @param  Model|Authenticatable  $user - The user to get the initials for
+     * @param  Model|Authenticatable  $user  - The user to get the initials for
      */
     public function getInitials(Model|Authenticatable $user): string;
 
     /**
      * Get the SVG markup that constitues the avatar
      *
-     * @param  string  $text - The text that is to be displayed on the avatar
+     * @param  string  $text  - The text that is to be displayed on the avatar
      */
     public function svg(string $text): string;
 
