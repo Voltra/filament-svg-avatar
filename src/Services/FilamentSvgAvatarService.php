@@ -13,6 +13,7 @@ use Spatie\Color\Color;
 use Spatie\Color\Contrast;
 use Spatie\Color\Hex;
 use Spatie\Color\Rgb;
+use Voltra\FilamentSvgAvatar\Components\Avatar;
 use Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract;
 use Voltra\FilamentSvgAvatar\FilamentSvgAvatarPlugin;
 
@@ -63,22 +64,27 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     public function svg(string $text): string
     {
-        $bgColor = (string) $this->getBackgroundColor();
-        $fontColor = (string) $this->getTextColor();
+        $bgColor = $this->getBackgroundColor();
+        $fontColor = $this->getTextColor();
         $font = $this->getFontFamily();
 
         $size = $this->getSize();
         $textSize = floor($size / 2);
         $dy = $this->getTextDy();
 
-        $svg = <<<SVG
-            <svg width="{$size}px" height="{$size}px" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0" y="0" width="{$size}" height="{$size}" rx="0" style="fill:{$bgColor};"/>
-                <text x="50%" y="50%" dy="{$dy}" fill="{$fontColor}" text-anchor="middle" dominant-baseline="middle" style="font-family: {$font}; font-size: {$textSize}px; line-height: 1;">
-                    {$text}
-                </text>
-            </svg>
-        SVG;
+        $component = new Avatar(
+            service: $this,
+            initials: $text,
+            dontInheritFontFamily: true, // <img/> don't properly handle inheriting fonts, and filament's avatar component uses one
+            backgroundColor: $bgColor,
+            textColor: $fontColor,
+            size: $size,
+            fontFamily: $font,
+            dy: $dy,
+            fontSize: (int) $textSize,
+        );
+
+        $svg = $component->render()->with($component->data())->render();
 
         return preg_replace([
             '/>\s+</m',
@@ -106,7 +112,7 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
             return $this->backgroundColor;
         }
 
-        $bg = $this->disallowPluginOverride ? null : $this->getPlugin()?->getBackgroundColor();
+        $bg = $this->disallowsPluginOverrides() ? null : $this->getPlugin()?->getBackgroundColor();
 
         return $bg
             ?? Rgb::fromString('rgb('.FilamentColor::getColors()['primary'][500].')');
@@ -127,7 +133,7 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
             return $this->textColor;
         }
 
-        if (! $this->disallowPluginOverride) {
+        if (! $this->disallowsPluginOverrides()) {
             $textCol = $this->getPlugin()?->getTextColor();
 
             if (! empty($textCol)) {
@@ -173,12 +179,24 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     public function getTextDy(): string
     {
-        return Config::get('filament-svg-avatar.textDy', $this->textDy);
+        return Config::get('filament-svg-avatar.textDy', $this->textDy) ?? $this->textDy;
     }
 
+    //    /**
+    //     * {@inheritDoc}
+    //     */
     public function getSize(): int
     {
-        return Config::get('filament-svg-avatar.svgSize', $this->svgSize);
+        return Config::get('filament-svg-avatar.svgSize', $this->svgSize) ?? $this->svgSize;
+    }
+
+    /**
+     * Whether plugin overrides are disallowed
+     * @return bool
+     */
+    public function disallowsPluginOverrides(): bool {
+        $fromConfig = Config::get('filament-svg-avatar.disallowPluginOverride', $this->disallowPluginOverride) ?? $this->disallowPluginOverride;
+        return $fromConfig || $this->disallowPluginOverride;
     }
 
     protected function getPlugin(): ?FilamentSvgAvatarPlugin

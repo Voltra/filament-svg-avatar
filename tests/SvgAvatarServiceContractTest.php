@@ -9,8 +9,9 @@ use Voltra\FilamentSvgAvatar\Services\FilamentSvgAvatarService;
 
 describe(SvgAvatarServiceContract::class, function () {
     beforeEach(function () {
-        App::forgetInstances();
-        App::flush();
+        /*App::forgetInstances();
+        App::flush();*/
+        App::instance(FilamentSvgAvatarServiceProvider::class, null);
     });
 
     it('can be resolved as the overridden service instance', function () {

@@ -49,4 +49,11 @@ interface SvgAvatarServiceContract
      * @note Used as the dy SVG attribute
      */
     public function getTextDy(): string;
+
+    /**
+     * Get the size of the SVG
+     *
+     * @todo Add to the interface in the next major version change
+     */
+    // public function getSize(): int;
 }

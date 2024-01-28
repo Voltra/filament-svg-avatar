@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Voltra\FilamentSvgAvatar;
 
 use Filament\Support\Assets\Asset;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Str;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Voltra\FilamentSvgAvatar\Components\Avatar;
 use Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract;
 use Voltra\FilamentSvgAvatar\Services\FilamentSvgAvatarService;
 
@@ -25,6 +28,8 @@ class FilamentSvgAvatarServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package->name(static::$name)
+            ->hasConfigFile()
+            ->hasViews()
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
@@ -34,11 +39,14 @@ class FilamentSvgAvatarServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
+        parent::packageRegistered();
         $this->app->scoped(SvgAvatarServiceContract::class, FilamentSvgAvatarService::class);
     }
 
     public function packageBooted(): void
     {
+        parent::packageBooted();
+        Blade::componentNamespace(Str::beforeLast(Avatar::class, '\\'), self::$viewNamespace);
     }
 
     protected function getRepoName(): string
