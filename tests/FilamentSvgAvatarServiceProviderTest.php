@@ -10,8 +10,9 @@ use Voltra\FilamentSvgAvatar\Services\FilamentSvgAvatarService;
 
 describe(FilamentSvgAvatarServiceProvider::class, function () {
     beforeEach(function () {
-        App::forgetInstances();
-        App::flush();
+        /*App::forgetInstances();
+        App::flush();*/
+        App::instance(FilamentSvgAvatarServiceProvider::class, null);
     });
 
     it('can be registered', function () {

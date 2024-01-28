@@ -6,6 +6,7 @@ namespace Voltra\FilamentSvgAvatar;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Spatie\Color\Color;
 use Voltra\FilamentSvgAvatar\Filament\AvatarProviders\SvgAvatarsProviders;
 
 /**
@@ -14,6 +15,58 @@ use Voltra\FilamentSvgAvatar\Filament\AvatarProviders\SvgAvatarsProviders;
 class FilamentSvgAvatarPlugin implements Plugin
 {
     const ID = 'filament-svg-avatar';
+
+    /**
+     * Override for the background color
+     */
+    protected ?Color $backgroundColor = null;
+
+    /**
+     * Override for the text color
+     */
+    protected ?Color $textColor = null;
+
+    /**
+     * Set the override background color
+     *
+     * @return $this
+     */
+    public function backgroundColor(?Color $backgroundColor): self
+    {
+        $this->backgroundColor = $backgroundColor;
+
+        return $this;
+    }
+
+    /**
+     * Set the override text color
+     *
+     * @return $this
+     */
+    public function textColor(?Color $textColor): self
+    {
+        $this->textColor = $textColor;
+
+        return $this;
+    }
+
+    /**
+     * Get the override background color
+     */
+    public function getBackgroundColor(): ?Color
+    {
+        return $this->backgroundColor;
+    }
+
+    /**
+     * Get the override text color
+     */
+    public function getTextColor(): ?Color
+    {
+        return $this->textColor;
+    }
+
+    ////
 
     final public function getId(): string
     {

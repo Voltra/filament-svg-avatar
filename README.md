@@ -19,6 +19,74 @@ You can install the package via composer:
 composer require voltra/filament-svg-avatar
 ```
 
+You can publish the config file with:
+
+```bash
+php artisan vendor:publish --tag="filament-svg-avatar-config"
+```
+
+Optionally, you can publish the views using
+
+```bash
+php artisan vendor:publish --tag="filament-svg-avatar-views"
+```
+
+This is the contents of the published config file:
+
+```php
+return [
+    /**
+     * Global config of the SVG size
+     *
+     * @type ?int
+     *
+     * @default 500
+     */
+    'svgSize' => null,
+
+    /**
+     * Global config for the avatar's background color (as a hex code)
+     *
+     * @type ?string
+     */
+    'backgroundColor' => null,
+
+    /**
+     * Global config for the avatar's text color (as a hex code)
+     *
+     * @type ?string
+     */
+    'textColor' => null,
+
+    /**
+     * Global config for whether to disallow the plugin from overriding colors
+     *
+     * @type bool
+     *
+     * @default false
+     */
+    'disallowPluginOverride' => false,
+
+    /**
+     * Global config for the avatar's font-family
+     *
+     * @type ?string
+     *
+     * @default \Filament\Facades\Filament::getFontFamily()
+     */
+    'fontFamily' => null,
+
+    /**
+     * Global config of the SVG size
+     *
+     * @type ?string
+     *
+     * @default '.1em'
+     */
+    'textDy' => null,
+];
+```
+
 ## Usage
 
 ### As the avatar provider
@@ -45,7 +113,9 @@ class MyPanelProvider extends \Filament\PanelProvider {
             // [...]
             ->plugins([
                 // [...]
-                \Voltra\FilamentSvgAvatar\FilamentSvgAvatarPlugin::make(),
+                \Voltra\FilamentSvgAvatar\FilamentSvgAvatarPlugin::make()
+                    ->backgroundColor(\Spatie\Color\Hex::fromString('#3b5998'))
+                    ->textColor(\Spatie\Color\Hex::fromString('#e9ebee')),
                 // [...]
 ]           )
             // [...]
@@ -53,7 +123,27 @@ class MyPanelProvider extends \Filament\PanelProvider {
 }
 ```
 
+### Replace filament's default avatar component
+
+First either publish filament's support package's views, or just create the `resources/views/vendor/filament-support/components/avatar.blade.php` file:
+
+```php
+@props([
+    'circular' => true,
+    'size' => 'md',
+])
+
+<x-filament-svg-avatar::avatar-override
+    :circular="$circular"
+    :size="$size"
+></x-filament-svg-avatar::avatar-override>
+```
+
+This will use the `<x-filament-svg-avatar::avatar/>` component, configure it based on what `<x-filament::avatar/>` expects, and output an `<svg>` instead of an `<img/>` (which means better custom font support!).
+
 ### Extend or override
+
+NB: Config values take precedence over overrides
 
 Create a class that implements the `\Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract` interface.
 
