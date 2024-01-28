@@ -15,10 +15,22 @@ class SvgAvatarsProviders implements AvatarProvider
     {
     }
 
-    public function get(Model|Authenticatable $record): string
+    /**
+     * Get the SVG of the avatar for the given record
+     */
+    public function getSvg(Model|Authenticatable $record): string
     {
         $initials = $this->avatarService->getInitials($record);
-        $svg = $this->avatarService->svg($initials);
+
+        return $this->avatarService->svg($initials);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function get(Model|Authenticatable $record): string
+    {
+        $svg = $this->getSvg($record);
         $svgStr = base64_encode($svg);
 
         return "data:image/svg+xml;base64,{$svgStr}";
