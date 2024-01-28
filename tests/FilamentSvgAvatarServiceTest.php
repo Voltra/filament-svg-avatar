@@ -407,8 +407,6 @@ describe(FilamentSvgAvatarService::class, function () {
                 $this->backgroundColor = Hex::fromString('#000');
                 $this->textColor = Hex::fromString('#fff');
             }
-
-
         }
 
         App::scoped(SvgAvatarServiceContract::class, SService9::class);

@@ -30,7 +30,7 @@ return [
     /**
      * Global config for whether to disallow the plugin from overriding colors
      *
-     * @type ?\Spatie\Color\Color
+     * @type bool
      *
      * @default false
      */

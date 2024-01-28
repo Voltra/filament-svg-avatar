@@ -27,6 +27,7 @@ class FilamentSvgAvatarServiceProvider extends PackageServiceProvider
         $package->name(static::$name)
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
+                    ->publishConfigFile()
                     ->askToStarRepoOnGitHub($this->getRepoName());
             });
     }
