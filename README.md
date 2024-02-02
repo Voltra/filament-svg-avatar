@@ -125,7 +125,7 @@ class MyPanelProvider extends \Filament\PanelProvider {
 
 ### Replace filament's default avatar component
 
-First either publish filament's support package's views, or just create the `resources/views/vendor/filament-support/components/avatar.blade.php` file:
+First either publish filament's support package's views, or just create the `resources/views/vendor/filament/components/avatar.blade.php` file:
 
 ```php
 @props([
@@ -134,6 +134,7 @@ First either publish filament's support package's views, or just create the `res
 ])
 
 <x-filament-svg-avatar::avatar-override
+    :attributes="$attributes"
     :circular="$circular"
     :size="$size"
 ></x-filament-svg-avatar::avatar-override>
