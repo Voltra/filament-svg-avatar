@@ -50,14 +50,7 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
      */
     public function getInitials(Model|Authenticatable $user): string
     {
-        return str(Filament::getNameForDefaultAvatar($user))
-            ->trim()
-            ->explode(' ') // Split by "word"
-            ->lazy()
-            ->map(fn (string $segment): string => filled($segment) ? mb_substr($segment, 0, 1) : '') // Only keep the first letter
-            ->map(fn (string $initial) => mb_strtoupper($initial)) // Turn every character to uppercase
-            ->take(2)
-            ->join(''); // Glue it all together
+        return Utils::initials(Filament::getNameForDefaultAvatar($user));
     }
 
     /**
