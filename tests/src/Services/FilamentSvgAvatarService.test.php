@@ -62,7 +62,7 @@ describe(FilamentSvgAvatarService::class, function () {
         $dy = $service->getTextDy();
 
         $expected = strtr(
-            '<svg width="{svgSize}px" height="{svgSize}px" viewBox="0 0 {svgSize} {svgSize}" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="{svgSize}" height="{svgSize}" rx="0" style="fill:rgb({bgRgb});"/><text x="50%" y="50%" dy="{dy}" fill="{fill}" text-anchor="middle" dominant-baseline="middle" style="font-family: {font}; font-size: {fontSizePx}px; line-height: 1;">{text}</text></svg>',
+            '<svg width="{svgSize}px" height="{svgSize}px" viewBox="0 0 {svgSize} {svgSize}" xmlns="http://www.w3.org/2000/svg" ><rect x="0" y="0" width="{svgSize}" height="{svgSize}" rx="0" style="fill:rgb({bgRgb});"/><text x="50%" y="50%" dy="{dy}" fill="{fill}" text-anchor="middle" dominant-baseline="middle" style="font-family: {font}; font-size: {fontSizePx}px; line-height: 1;">{text}</text></svg>',
             [
                 '{svgSize}' => $svgSize,
                 '{bgRgb}' => $bg,

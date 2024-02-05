@@ -8,6 +8,7 @@ use Filament\Facades\Filament;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Spatie\Color\Color;
 use Spatie\Color\Contrast;
@@ -72,7 +73,7 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
         $textSize = floor($size / 2);
         $dy = $this->getTextDy();
 
-        $component = new Avatar(
+        $avatar = new Avatar(
             service: $this,
             initials: $text,
             dontInheritFontFamily: true, // <img/> don't properly handle inheriting fonts, and filament's avatar component uses one
@@ -84,7 +85,7 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
             fontSize: (int) $textSize,
         );
 
-        $svg = $component->render()->with($component->data())->render();
+        $svg = Blade::renderComponent($avatar);
 
         return preg_replace([
             '/>\s+</m',
