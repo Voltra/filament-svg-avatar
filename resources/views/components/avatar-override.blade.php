@@ -8,7 +8,8 @@
  * @var \Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract $service
  */
 $service = resolve(\Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract::class);
-$initials = $attributes->has('alt') ? $service->getInitials($attributes->get('alt')) : "";
+$initials = $attributes->has('alt') ? $service->getInitials($attributes->get('alt')) : '';
+$initials ??= $attributes->has('src') ? $service->getInitials($attributes->get('src')) : '';
 @endphp
 
 <x-filament-svg-avatar::avatar

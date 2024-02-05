@@ -142,6 +142,19 @@ First either publish filament's support package's views, or just create the `res
 
 This will use the `<x-filament-svg-avatar::avatar/>` component, configure it based on what `<x-filament::avatar/>` expects, and output an `<svg>` instead of an `<img/>` (which means better custom font support!).
 
+Then change the default avatar provider to use `\Voltra\FilamentSvgAvatar\Filament\AvatarProviders\RawSvgAvatarProvider::class` so that it can properly use the initials instead of a URL:
+
+```php
+class MyPanelProvider extends \Filament\PanelProvider {
+    public function panel(\Filament\Panel $panel) {
+        return $panel
+            // [...]
+            ->defaultAvatarProvider(\Voltra\FilamentSvgAvatar\Filament\AvatarProviders\RawSvgAvatarProvider::class)
+            // [...]
+    }
+}
+```
+
 ### Extend or override
 
 NB: Config values take precedence over overrides
