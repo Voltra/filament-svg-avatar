@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Voltra\FilamentSvgAvatar\Filament\AvatarProviders;
 
 use Filament\AvatarProviders\Contracts\AvatarProvider;
