@@ -2,6 +2,12 @@
 
 All notable changes to `filament-svg-avatar` will be documented in this file.
 
+## v1.2.1 - 2024-03-30
+
+Fix the avatar override system
+
+**Full Changelog**: https://github.com/Voltra/filament-svg-avatar/compare/v1.2.0...v1.2.1
+
 ## v1.2.0 - 2024-03-30
 
 Enhance avatar view component replacement procedure
