@@ -2,6 +2,12 @@
 
 All notable changes to `filament-svg-avatar` will be documented in this file.
 
+## v1.1.1 - 2024-03-30
+
+Fix attribute propagations in view components
+
+**Full Changelog**: https://github.com/Voltra/filament-svg-avatar/compare/v1.1.0...v1.1.1
+
 ## v1.1.0 - 2024-01-28
 
 Allow for better configuration and overrides via the service, a config file and view components
