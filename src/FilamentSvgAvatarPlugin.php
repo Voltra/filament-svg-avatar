@@ -7,6 +7,7 @@ namespace Voltra\FilamentSvgAvatar;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Spatie\Color\Color;
+use Voltra\FilamentSvgAvatar\Filament\AvatarProviders\RawSvgAvatarProvider;
 use Voltra\FilamentSvgAvatar\Filament\AvatarProviders\SvgAvatarsProviders;
 
 /**
@@ -15,6 +16,11 @@ use Voltra\FilamentSvgAvatar\Filament\AvatarProviders\SvgAvatarsProviders;
 class FilamentSvgAvatarPlugin implements Plugin
 {
     const ID = 'filament-svg-avatar';
+
+    const AVAILABLE_PROVIDERS = [
+        SvgAvatarsProviders::class,
+        RawSvgAvatarProvider::class,
+    ];
 
     /**
      * Override for the background color
@@ -75,6 +81,15 @@ class FilamentSvgAvatarPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
+        $class = $panel->getDefaultAvatarProvider();
+
+        // If we already have a provider registered, and it's one provided by this package
+        // then we don't want to add our optional default here. This makes it so that library
+        // users can register the plugin AND register one of our providers manually (e.g. RawSvgAvatarProvider)
+        if (! empty($class) && in_array($class, static::AVAILABLE_PROVIDERS)) {
+            return;
+        }
+
         $panel->defaultAvatarProvider(SvgAvatarsProviders::class);
     }
 
