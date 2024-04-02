@@ -1,8 +1,8 @@
 {
     "name": "voltra/filament-svg-avatar",
-	"version": "1.2.2",
+	"version": "1.2.3",
 	"type": "library",
-    "description": " Change the default avatar url provider with one for inline SVGs",
+    "description": "Change the default avatar url provider with one for inline SVGs",
     "keywords": [
         "Voltra",
         "laravel",
