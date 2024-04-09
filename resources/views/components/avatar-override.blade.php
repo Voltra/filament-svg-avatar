@@ -24,6 +24,6 @@
             'lg' => 'h-10 w-10',
             default => $size,
         },
-    ])"
+    ])->except(['src', 'alt'])"
     :initials="$initials"
 ></x-filament-svg-avatar::avatar>
