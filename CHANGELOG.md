@@ -2,6 +2,12 @@
 
 All notable changes to `filament-svg-avatar` will be documented in this file.
 
+## v1.2.4 - 2024-04-03
+
+Fix issue with new default alt text for avatars
+
+**Full Changelog**: https://github.com/Voltra/filament-svg-avatar/compare/v1.2.3...v1.2.4
+
 ## v1.2.3 - 2024-04-02
 
 Ensure the avatar provider is overriden in plugin mode only if necessary
