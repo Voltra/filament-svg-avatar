@@ -1,6 +1,6 @@
 {
     "name": "voltra/filament-svg-avatar",
-	"version": "1.2.4",
+	"version": "1.2.5",
 	"type": "library",
     "description": "Change the default avatar url provider with one for inline SVGs",
     "keywords": [
@@ -31,10 +31,10 @@
         "illuminate/contracts": "^10.0||^11.0"
     },
     "require-dev": {
+        "larastan/larastan": "^2.9",
         "laravel/facade-documenter": "dev-main",
         "laravel/pint": "^1.0",
         "nunomaduro/collision": "^7.9",
-        "nunomaduro/larastan": "^2.0.1",
         "orchestra/testbench": "^8.0",
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-arch": "^2.0",

@@ -91,6 +91,10 @@ return [
 
 ### As the avatar provider
 
+Note `SvgAvatarsProviders` only renders properly if the font is available on the user's machine when the browser would decode the SVG as a base64 image.
+
+If you want something portable, you'll need to replace Filament's default avatar component (see sections below).
+
 ```php
 class MyPanelProvider extends \Filament\PanelProvider {
     public function panel(\Filament\Panel $panel) {
@@ -104,7 +108,7 @@ class MyPanelProvider extends \Filament\PanelProvider {
 
 ### As a plugin
 
-It automatically registers the avatar provider.
+It automatically registers `SvgAvatarsProviders` as the avatar provider.
 
 ```php
 class MyPanelProvider extends \Filament\PanelProvider {
@@ -117,7 +121,28 @@ class MyPanelProvider extends \Filament\PanelProvider {
                     ->backgroundColor(\Spatie\Color\Hex::fromString('#3b5998'))
                     ->textColor(\Spatie\Color\Hex::fromString('#e9ebee')),
                 // [...]
-]           )
+            ])
+            // [...]
+    }
+}
+```
+
+NB: If you register the plugin and want to register a provider that isn't our `SvgAvatarsProviders` (e.g. to use `RawSvgAvatarProvider`), you'll have to register it manually AFTER the plugin.
+Other providers from this package can be registered before (or after) the plugin, but external providers need to be registered after the plugin.
+
+```php
+class MyPanelProvider extends \Filament\PanelProvider {
+    public function panel(\Filament\Panel $panel) {
+        return $panel
+            // [...]
+            ->plugins([
+                // [...]
+                \Voltra\FilamentSvgAvatar\FilamentSvgAvatarPlugin::make()
+                    ->backgroundColor(\Spatie\Color\Hex::fromString('#3b5998'))
+                    ->textColor(\Spatie\Color\Hex::fromString('#e9ebee')),
+                // [...]
+            ])
+            ->defaultAvatarProvider(\Voltra\FilamentSvgAvatar\Filament\AvatarProviders\RawSvgAvatarProvider::class)
             // [...]
     }
 }
@@ -125,7 +150,27 @@ class MyPanelProvider extends \Filament\PanelProvider {
 
 ### Replace filament's default avatar component
 
-First either publish filament's support package's views, or just create the `resources/views/vendor/filament/components/avatar.blade.php` file:
+First change the default avatar provider to use `\Voltra\FilamentSvgAvatar\Filament\AvatarProviders\RawSvgAvatarProvider::class` so that it can properly use the initials instead of a URL:
+
+```php
+class MyPanelProvider extends \Filament\PanelProvider {
+    public function panel(\Filament\Panel $panel) {
+        return $panel
+            // [...]
+            ->defaultAvatarProvider(\Voltra\FilamentSvgAvatar\Filament\AvatarProviders\RawSvgAvatarProvider::class)
+            // [...]
+    }
+}
+```
+
+Then you'll have to override filament's avatar blade component.
+
+If you don't want to do it manually, just execute this command:
+```bash
+php artisan vendor:publish --tag=filament-svg-avatar-core-overrides
+```
+
+If you want to do it manually: either publish filament's support package's views, or just create the `resources/views/vendor/filament/components/avatar.blade.php` file with the following content.
 
 ```php
 @props([
@@ -142,18 +187,6 @@ First either publish filament's support package's views, or just create the `res
 
 This will use the `<x-filament-svg-avatar::avatar/>` component, configure it based on what `<x-filament::avatar/>` expects, and output an `<svg>` instead of an `<img/>` (which means better custom font support!).
 
-Then change the default avatar provider to use `\Voltra\FilamentSvgAvatar\Filament\AvatarProviders\RawSvgAvatarProvider::class` so that it can properly use the initials instead of a URL:
-
-```php
-class MyPanelProvider extends \Filament\PanelProvider {
-    public function panel(\Filament\Panel $panel) {
-        return $panel
-            // [...]
-            ->defaultAvatarProvider(\Voltra\FilamentSvgAvatar\Filament\AvatarProviders\RawSvgAvatarProvider::class)
-            // [...]
-    }
-}
-```
 
 ### Extend or override
 
