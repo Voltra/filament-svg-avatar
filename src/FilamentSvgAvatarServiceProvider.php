@@ -47,6 +47,10 @@ class FilamentSvgAvatarServiceProvider extends PackageServiceProvider
     {
         parent::packageBooted();
         Blade::componentNamespace(Str::beforeLast(Avatar::class, '\\'), self::$viewNamespace);
+
+        $this->publishes([
+            $this->package->basePath('/../resources/overrides/views/filament-core-avatar-override.blade.php') => resource_path('views/vendor/filament/components/avatar.blade.php'),
+        ], 'filament-svg-avatar-core-overrides');
     }
 
     protected function getRepoName(): string
