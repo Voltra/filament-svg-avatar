@@ -4,9 +4,12 @@
 ])
 
 @php
+    $filamentAvatarAltLangStr = 'filament-panels::layout.avatar.alt';
     $initials = $attributes->has('alt') ? $attributes->get('alt') : '';
 
-    $initials = $initials === 'filament-panels::layout.avatar.alt'
+    $unwantedLabels = [$filamentAvatarAltLangStr, __($filamentAvatarAltLangStr)];
+
+    $initials = in_array($initials, $unwantedLabels)
         ? ''
         : \Voltra\FilamentSvgAvatar\Services\Utils::initials($initials);
 
