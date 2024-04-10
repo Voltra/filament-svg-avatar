@@ -2,6 +2,20 @@
 
 All notable changes to `filament-svg-avatar` will be documented in this file.
 
+## v1.2.6 - 2024-04-10
+
+Exclude the translations of `filament-panels::layout.avatar.alt` from being picked up for the initials in the avatar override component
+
+**Full Changelog**: https://github.com/Voltra/filament-svg-avatar/compare/v1.2.5...v1.2.6
+
+## v1.2.5 - 2024-04-10
+
+* Prevent `src` and `alt` attributes from bleeding down into the avatar's SVG
+* Make the manual override semi-automatic using the vendor tag `filament-svg-avatar-core-overrides`
+* Make the README clearer on which procedure is preferred, and what their respective limitations are
+
+**Full Changelog**: https://github.com/Voltra/filament-svg-avatar/compare/v1.2.4...v1.2.5
+
 ## v1.2.4 - 2024-04-03
 
 Fix issue with new default alt text for avatars
