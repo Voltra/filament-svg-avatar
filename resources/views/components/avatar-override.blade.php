@@ -3,18 +3,7 @@
     'size' => 'md',
 ])
 
-@php
-    $filamentAvatarAltLangStr = 'filament-panels::layout.avatar.alt';
-    $initials = $attributes->has('alt') ? $attributes->get('alt') : '';
-
-    $unwantedLabels = [$filamentAvatarAltLangStr, __($filamentAvatarAltLangStr)];
-
-    $initials = in_array($initials, $unwantedLabels)
-        ? ''
-        : \Voltra\FilamentSvgAvatar\Services\Utils::initials($initials);
-
-    $initials = $initials ?: ($attributes->has('src') ? $attributes->get('src') : '');
-@endphp
+@php($initials = $attributes->has('src') ? $attributes->get('src') : '')
 
 <x-filament-svg-avatar::avatar
     :attributes="$attributes->class([
