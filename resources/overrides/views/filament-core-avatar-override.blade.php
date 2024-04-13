@@ -4,7 +4,7 @@
 ])
 
 <x-filament-svg-avatar::avatar-override
-    :attributes="$attributes"
+    :attributes="$attributes->except(['alt'])"
     :circular="$circular"
     :size="$size"
 ></x-filament-svg-avatar::avatar-override>
