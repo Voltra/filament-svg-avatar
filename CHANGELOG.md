@@ -2,6 +2,12 @@
 
 All notable changes to `filament-svg-avatar` will be documented in this file.
 
+## v1.2.8 - 2025-07-24
+
+Add compatibility with Laravel 12
+
+**Full Changelog**: https://github.com/Voltra/filament-svg-avatar/compare/v1.2.7...v1.2.8
+
 ## v1.2.7 - 2024-04-13
 
 Drop use of the alt attribute/prop in override components
