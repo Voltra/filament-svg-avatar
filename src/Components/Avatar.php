@@ -53,8 +53,7 @@ class Avatar extends Component
          * Override the text's svg font size
          */
         public ?int $fontSize = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Renders a view for the avatar component
@@ -107,7 +106,7 @@ class Avatar extends Component
      */
     public function getSvgSize(): int
     {
-        //TODO: Get the default size from the interface in the next major version change
+        // TODO: Get the default size from the interface in the next major version change
         return $this->size ?? 500;
     }
 
@@ -116,7 +115,7 @@ class Avatar extends Component
      */
     public function getTextSize(): int
     {
-        //TODO: Allow for easy override
+        // TODO: Allow for easy override
         return $this->fontSize ?? $this->getSvgSize() / 2;
     }
 }

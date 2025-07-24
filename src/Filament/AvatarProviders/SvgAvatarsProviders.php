@@ -11,9 +11,7 @@ use Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract;
 
 class SvgAvatarsProviders implements AvatarProvider
 {
-    public function __construct(protected SvgAvatarServiceContract $avatarService)
-    {
-    }
+    public function __construct(protected SvgAvatarServiceContract $avatarService) {}
 
     /**
      * Get the SVG of the avatar for the given record
