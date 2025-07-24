@@ -13,9 +13,7 @@ describe('<x-filament-svg-avatar::avatar-override/>', function () {
     beforeEach(function () {
         App::register(FilamentSvgAvatarServiceProvider::class);
 
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
         Filament::setCurrentPanel($panel);
     });
 

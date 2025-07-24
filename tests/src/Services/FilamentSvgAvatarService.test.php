@@ -33,9 +33,7 @@ describe(FilamentSvgAvatarService::class, function () {
     });
 
     it('generates the right minified SVG markup', function (string $bg, string $fg, string $text, string $font) {
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
 
         $panel
             ->default()
@@ -85,9 +83,7 @@ describe(FilamentSvgAvatarService::class, function () {
     ]);
 
     it('can have its background color customized through the panel plugin', function () {
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
         $color = Hex::fromString('#f0f0f0');
         $panel->plugin(FilamentSvgAvatarPlugin::make()->backgroundColor($color));
         Filament::setCurrentPanel($panel);
@@ -101,9 +97,7 @@ describe(FilamentSvgAvatarService::class, function () {
     });
 
     it('can have its text color customized through the panel plugin', function () {
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
         $color = Hex::fromString('#3b5998');
         $panel->plugin(FilamentSvgAvatarPlugin::make()->textColor($color));
         Filament::setCurrentPanel($panel);
@@ -117,9 +111,7 @@ describe(FilamentSvgAvatarService::class, function () {
     });
 
     it('can be overridden to disallow panel overrides', function () {
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
 
         $pluginMock = Mockery::mock(FilamentSvgAvatarPlugin::class);
 
@@ -214,9 +206,7 @@ describe(FilamentSvgAvatarService::class, function () {
     });
 
     it('can be overridden to use a different size', function () {
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
         Filament::setCurrentPanel($panel);
 
         function sservice4()
@@ -253,9 +243,7 @@ describe(FilamentSvgAvatarService::class, function () {
 
         $expected = Hex::fromString($color);
 
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
         Filament::setCurrentPanel($panel);
 
         class SService5 extends FilamentSvgAvatarService
@@ -282,9 +270,7 @@ describe(FilamentSvgAvatarService::class, function () {
 
         $expected = Hex::fromString($color);
 
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
         Filament::setCurrentPanel($panel);
 
         class SService6 extends FilamentSvgAvatarService
@@ -309,9 +295,7 @@ describe(FilamentSvgAvatarService::class, function () {
         $fontFamily = 'Meredith, sans, undertale, serif';
         Config::set('filament-svg-avatar.fontFamily', $fontFamily);
 
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
         $panel->font('My font family');
         Filament::setCurrentPanel($panel);
 
@@ -329,9 +313,7 @@ describe(FilamentSvgAvatarService::class, function () {
         $textDy = '-3rem';
         Config::set('filament-svg-avatar.textDy', $textDy);
 
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
         Filament::setCurrentPanel($panel);
 
         class SService7 extends FilamentSvgAvatarService
@@ -356,9 +338,7 @@ describe(FilamentSvgAvatarService::class, function () {
         $svgSize = 2400;
         Config::set('filament-svg-avatar.svgSize', $svgSize);
 
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
         Filament::setCurrentPanel($panel);
 
         class SService8 extends FilamentSvgAvatarService
@@ -382,9 +362,7 @@ describe(FilamentSvgAvatarService::class, function () {
     it('can be overridden to globally disable panel overrides via config, and it takes precedence over other overrides', function () {
         Config::set('filament-svg-avatar.disallowPluginOverride', true);
 
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
 
         $plugin = FilamentSvgAvatarPlugin::make();
 

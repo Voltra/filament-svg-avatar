@@ -11,9 +11,7 @@ use Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract;
 
 class RawSvgAvatarProvider implements AvatarProvider
 {
-    public function __construct(protected SvgAvatarServiceContract $avatarService)
-    {
-    }
+    public function __construct(protected SvgAvatarServiceContract $avatarService) {}
 
     public function get(Model|Authenticatable $record): string
     {

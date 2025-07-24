@@ -72,7 +72,7 @@ class FilamentSvgAvatarPlugin implements Plugin
         return $this->textColor;
     }
 
-    ////
+    // //
 
     final public function getId(): string
     {
