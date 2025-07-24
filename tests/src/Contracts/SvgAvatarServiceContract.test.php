@@ -17,9 +17,7 @@ describe(SvgAvatarServiceContract::class, function () {
     it('can be resolved as the overridden service instance', function () {
         App::register(FilamentSvgAvatarServiceProvider::class);
 
-        class CService extends FilamentSvgAvatarService
-        {
-        }
+        class CService extends FilamentSvgAvatarService {}
 
         App::scoped(SvgAvatarServiceContract::class, CService::class);
 

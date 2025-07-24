@@ -31,9 +31,7 @@ describe(FilamentSvgAvatarPlugin::class, function () {
     });
 
     it('registers SvgAvatarsProviders as the default provider if none is set', function () {
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
 
         $panel
             ->default()
@@ -43,9 +41,7 @@ describe(FilamentSvgAvatarPlugin::class, function () {
     });
 
     it('doesn\'t register SvgAvatarsProviders as the default provider if we provide another one from the package', function () {
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
 
         $panel
             ->default()
@@ -56,9 +52,7 @@ describe(FilamentSvgAvatarPlugin::class, function () {
 
         unset($panel);
 
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
 
         $panel
             ->default()
@@ -71,9 +65,7 @@ describe(FilamentSvgAvatarPlugin::class, function () {
     it('registers SvgAvatarsProviders as the default provider if we provide another one that is not from the package (before registering the plugin)', function () {
         $provider = 'My\\Hypothetical\\AvatarProvider';
 
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
 
         $panel
             ->default()
@@ -86,9 +78,7 @@ describe(FilamentSvgAvatarPlugin::class, function () {
     it('doesn\'t change the default provider if we provide another one that is not from the package (after registering the plugin)', function () {
         $provider = 'My\\Hypothetical\\AvatarProvider';
 
-        $panel = new class() extends Panel
-        {
-        };
+        $panel = new class extends Panel {};
 
         $panel
             ->default()
