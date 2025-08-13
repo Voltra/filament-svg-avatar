@@ -11,9 +11,9 @@
         'rounded-md' => ! $circular,
         'fi-circular rounded-full' => $circular,
         match ($size) {
-            'sm' => 'h-6 w-6',
-            'md' => 'h-8 w-8',
-            'lg' => 'h-10 w-10',
+            'sm' => sprintf('h-6 w-6 fi-size-%s', $size),
+            'md' => sprintf('h-8 w-8 fi-size-%s', $size),
+            'lg' => sprintf('h-10 w-10 fi-size-%s', $size),
             default => $size,
         },
     ])->except(['src', 'alt'])"
