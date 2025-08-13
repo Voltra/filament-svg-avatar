@@ -2,6 +2,14 @@
 
 All notable changes to `filament-svg-avatar` will be documented in this file.
 
+## v1.3.0 - 2025-08-13
+
+Add compatibility with Filament v4
+
+***Warning:*** Please follow [this migration guide](https://github.com/Voltra/filament-svg-avatar?tab=readme-ov-file#migrating-from-filament-v3-to-filament-v4) if you migrated to Filament v4
+
+**Full Changelog**: https://github.com/Voltra/filament-svg-avatar/compare/v1.2.8...v1.3.0
+
 ## v1.2.8 - 2025-07-24
 
 Add compatibility with Laravel 12
