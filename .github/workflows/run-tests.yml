@@ -15,20 +15,29 @@ jobs:
         os: [ ubuntu-latest, windows-latest ]
         php: [ 8.3, 8.2, 8.1 ]
         laravel: [ 12.*, 11.*, 10.* ]
+        filament: [ 3.*, 4.* ]
+        carbon: [ 2.63, 3.0 ]
         dependency-version: [ prefer-lowest, prefer-stable ]
         stability: [ prefer-lowest, prefer-stable ]
         include:
           - laravel: 12.*
             testbench: 10.*
             carbon: ^3.0
+            filament: ^4.*
+          - laravel: 12.*
+            testbench: 10.*
+            carbon: ^3.0
+            filament: ^3.*
           - laravel: 11.*
             testbench: 9.*
             carbon: ^3.0
+            filament: ^3.*
           - laravel: 10.*
             testbench: 8.*
             carbon: ^2.63
+            filament: ^3.*
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - F${{ matrix.filament }} - C${{ matrix.carbon }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -38,7 +47,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.composer/cache/files
-          key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+          key: dependencies-carbon-${{ matrix.carbon }}-filament-${{ matrix.filament }}-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -54,7 +63,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" "filament/filament:${{ matrix.filament }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: List Installed Dependencies
