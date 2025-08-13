@@ -87,6 +87,16 @@ return [
 ];
 ```
 
+## Migrating from Filament v3 to Filament v4
+
+Since v1.3.0, filament-svg-avatar is also compatible with Filament v4. However, manual migration steps might need to be taken.
+
+If you've been using the avatar override that is described further down, or have overriden the `avatar-override.blade.php` template, then you need to update the vendor view:
+
+```bash
+php artisan vendor:publish --tag=filament-svg-avatar-core-overrides --force
+```
+
 ## Usage
 
 ### As the avatar provider
