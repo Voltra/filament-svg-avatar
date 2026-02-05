@@ -63,7 +63,7 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest --ci
-  ############################################################################################
+
   test-f4:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -120,7 +120,7 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest --ci
-  ############################################################################################
+
   test-f3:
     runs-on: ${{ matrix.os }}
     strategy:
