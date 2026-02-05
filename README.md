@@ -1,6 +1,6 @@
 ![Filament Svg Avatar: Change the default avatar url provider with one for inline SVGs](https://raw.githubusercontent.com/Voltra/filament-svg-avatar/main/art/banner.jpeg)
 
-#  voltra/filament-svg-avatar
+# voltra/filament-svg-avatar
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/voltra/filament-svg-avatar.svg?style=flat-square)](https://packagist.org/packages/voltra/filament-svg-avatar)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/voltra/filament-svg-avatar/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/voltra/filament-svg-avatar/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -85,6 +85,16 @@ return [
      */
     'textDy' => null,
 ];
+```
+
+## Migrating from Filament v4 to Filament v5
+
+Since v1.4.0, filament-svg-avatar is also compatible with Filament v5.However, manual migration steps might need to be taken.
+
+If you've been using the avatar override that is described further down, or have overriden the `avatar-override.blade.php` template, then you need to update the vendor view:
+
+```bash
+php artisan vendor:publish --tag=filament-svg-avatar-core-overrides --force
 ```
 
 ## Migrating from Filament v3 to Filament v4
@@ -176,6 +186,7 @@ class MyPanelProvider extends \Filament\PanelProvider {
 Then you'll have to override filament's avatar blade component.
 
 If you don't want to do it manually, just execute this command:
+
 ```bash
 php artisan vendor:publish --tag=filament-svg-avatar-core-overrides
 ```
@@ -197,7 +208,6 @@ If you want to do it manually: either publish filament's support package's views
 
 This will use the `<x-filament-svg-avatar::avatar/>` component, configure it based on what `<x-filament::avatar/>` expects, and output an `<svg>` instead of an `<img/>` (which means better custom font support!).
 
-
 ### Extend or override
 
 NB: Config values take precedence over overrides
@@ -207,10 +217,11 @@ Create a class that implements the `\Voltra\FilamentSvgAvatar\Contracts\SvgAvata
 You can even extend from `\Voltra\FilamentSvgAvatar\Services\FilamentSvgAvatarService`.
 
 Then, in a service provider, bind your implementation to the interface:
+
 ```php
 class MyServiceProvider extends \Illuminate\Support\ServiceProvider {
     // [...]
-        
+
     public function register() {
         // [...]
         $this->app->scoped(\Voltra\FilamentSvgAvatar\Contracts\SvgAvatarServiceContract::class, MySvgAvatarServiceImpl::class);
