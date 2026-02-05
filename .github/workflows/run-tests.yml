@@ -20,40 +20,40 @@ jobs:
         dependency-version: [prefer-lowest, prefer-stable]
         stability: [prefer-lowest, prefer-stable]
         include:
-          - laravel: 12.*
-            testbench: 10.*
-            carbon: 3.0
-            filament: 5.*
-            php: 8.3
-          - laravel: 12.*
-            testbench: 10.*
-            carbon: 3.0
-            filament: 4.*
-          - laravel: 12.*
-            testbench: 10.*
-            carbon: 3.0
+          - laravel: ^12.*
+            testbench: ^10.*
+            carbon: ^3.0
+            filament: ^5.*
+            php: ^8.3
+          - laravel: ^12.*
+            testbench: ^10.*
+            carbon: ^3.0
+            filament: ^4.*
+          - laravel: ^12.*
+            testbench: ^10.*
+            carbon: ^3.0
             filament: ^3.*
-          - laravel: 11.*
-            testbench: 9.*
-            carbon: 3.0
-            filament: 3.*
-          - laravel: 10.*
-            testbench: 8.*
-            carbon: 2.63
-            filament: 3.*
+          - laravel: ^11.*
+            testbench: ^9.*
+            carbon: ^3.0
+            filament: ^3.*
+          - laravel: ^10.*
+            testbench: ^8.*
+            carbon: ^2.63
+            filament: ^3.*
         exclude:
-          - filament: 5.*
+          - filament: ^5.*
             php: 8.2
-          - filament: 5.*
+          - filament: ^5.*
             php: 8.1
-          - filament: 4.*
+          - filament: ^4.*
             php: 8.1
-          - laravel: 12.*
-            carbon: 2.63
-          - laravel: 11.*
-            carbon: 2.63
+          - laravel: ^12.*
+            carbon: ^2.63
+          - laravel: ^11.*
+            carbon: ^2.63
           - laravel: 10.*
-            carbon: 3.*
+            carbon: ^3.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - F${{ matrix.filament }} - C${{ matrix.carbon }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
