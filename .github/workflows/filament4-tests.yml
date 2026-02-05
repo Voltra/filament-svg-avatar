@@ -8,7 +8,7 @@ on:
 
 jobs:
   filament-v4-tests:
-    runs-on: ${{ matrix.os }}
+    runs-on: "${{ matrix.os }}"
     strategy:
       fail-fast: true
       matrix:
