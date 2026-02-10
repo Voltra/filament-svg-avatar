@@ -36,11 +36,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require \
-            filament/filament:^4.0 \
-            laravel/framework:${{ matrix.laravel }} \
-            --no-update
-
+          composer require filament/filament:^4.0 laravel/framework:${{ matrix.laravel }} --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Run tests
