@@ -5,7 +5,7 @@
     backupGlobals="false"
     bootstrap="vendor/autoload.php"
     colors="true"
-    processIsolation="true"
+    processIsolation="false"
     stopOnFailure="false"
     failOnWarning="true"
     failOnRisky="true"
