@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Voltra\FilamentSvgAvatar\Services;
 
 use Filament\Facades\Filament;
+use Filament\Support\Colors\Color as ColorsColor;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -109,7 +110,7 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
         $bg = $this->disallowsPluginOverrides() ? null : $this->getPlugin()?->getBackgroundColor();
 
         return $bg
-            ?? Rgb::fromString('rgb('.FilamentColor::getColors()['primary'][500].')');
+            ?? $this->getDefaultBackgroundColor();
     }
 
     /**
@@ -136,7 +137,7 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
         }
 
         $bg = $this->getBackgroundColor();
-        $white = Hex::fromString('#fff');
+        $white = Hex::fromString('#ffffff');
 
         $ratioToWhite = Contrast::ratio($bg, $white);
 
@@ -144,7 +145,7 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
             return $white;
         }
 
-        $black = Hex::fromString('#000');
+        $black = Hex::fromString('#000000');
         $ratioToBlack = Contrast::ratio($bg, $black);
 
         if ($ratioToBlack >= 7) {
@@ -205,5 +206,21 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
         $plugin = Filament::getPlugin($id);
 
         return $plugin instanceof FilamentSvgAvatarPlugin ? $plugin : null;
+    }
+
+    protected function getDefaultBackgroundColor(): Color {
+        $color = FilamentColor::getColors()['primary'][500];
+
+        if (is_iterable($color)) {
+            $components = collect($color)->join(',');
+            return Rgb::fromString("rgb($components)");
+        }
+
+        if (str_starts_with($color, 'oklch(')) {
+            $rgb = Utils::oklchToRgb($color);
+            return Rgb::fromString($rgb);
+        }
+
+        return Rgb::fromString("rgb($color)");
     }
 }
