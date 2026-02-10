@@ -47,8 +47,7 @@ jobs:
           - laravel: 10.*
             testbench: 8.*
             carbon: 2.63
-    name: >-
-      P${{ matrix.php }} - L${{ matrix.laravel }} - F3.* - C${{ matrix.carbon }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - F3.* - C${{ matrix.carbon }} - ${{ matrix.stability }} - ${{ matrix.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -56,8 +55,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.composer/cache/files
-          key: >-
-            dependencies-carbon-${{ matrix.carbon }}-filament-3-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+          key: dependencies-carbon-${{ matrix.carbon }}-filament-3-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:

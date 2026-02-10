@@ -35,8 +35,7 @@ jobs:
             testbench: 10.*
           - laravel: 11.*
             testbench: 9.*
-    name: >-
-      P${{ matrix.php }} - L${{ matrix.laravel }} - F5.* - C3 - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - F5.* - C3 - ${{ matrix.stability }} - ${{ matrix.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
