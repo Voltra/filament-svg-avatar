@@ -62,7 +62,13 @@
         "test": "@php ./vendor/bin/pest",
         "test-coverage": "@php ./vendor/bin/pest --coverage",
         "format": "@php ./vendor/bin/pint",
-        "update-facade": "@php ./vendor/bin/facade.php Voltra\\FilamentSvgAvatar\\Facades\\FilamentSvgAvatar"
+        "update-facade": "@php ./vendor/bin/facade.php Voltra\\FilamentSvgAvatar\\Facades\\FilamentSvgAvatar",
+        "pre-commit": [
+            "@update-facade",
+            "@analyse",
+            "@format",
+            "@test"
+        ]
     },
     "config": {
         "sort-packages": true,
