@@ -2,6 +2,20 @@
 
 All notable changes to `filament-svg-avatar` will be documented in this file.
 
+## v1.4.0 - 2026-02-10
+
+Add compatibility with Filament v4
+
+Warning: Please follow [this migration guide](https://github.com/Voltra/filament-svg-avatar?tab=readme-ov-file#migrating-from-filament-v4-to-filament-v5) if you migrated to Filament v5
+
+> Dev notes:
+
+- There were basically no changes for the package's code itself taking Filament v5 into account
+- `orchestra/testbench` sometimes fails to uphold semver
+- Github actions are a pain to maintain
+
+**Full Changelog**: https://github.com/Voltra/filament-svg-avatar/compare/v1.3.0...v1.4.0
+
 ## v1.3.0 - 2025-08-13
 
 Add compatibility with Filament v4
