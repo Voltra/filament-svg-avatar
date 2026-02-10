@@ -23,7 +23,7 @@ use Voltra\FilamentSvgAvatar\FilamentSvgAvatarServiceProvider;
 
 class TestCase extends Orchestra
 {
-    // use MakesHttpRequests;
+    use MakesHttpRequests; // compat for Filament v3, v4 and v5
 
     protected function setUp(): void
     {
