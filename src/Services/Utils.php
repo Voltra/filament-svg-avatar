@@ -20,9 +20,11 @@ class Utils
 
     /**
      * @precondition is_array(sscanf($color, 'oklch(%f %f %f)'))
+     *
      * @see https://github.com/filamentphp/support/blob/5.x/src/Colors/Color.php#L381
      */
-    public static function oklchToRgb(string $color): string {
+    public static function oklchToRgb(string $color): string
+    {
         // Parse the OKLCH values
         [$lightness, $chroma, $hue] = sscanf($color, 'oklch(%f %f %f)');
 
