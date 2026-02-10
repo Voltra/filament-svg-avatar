@@ -211,6 +211,7 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
     protected function getDefaultBackgroundColor(): Color {
         $color = FilamentColor::getColors()['primary'][500];
 
+        /* @phpstan-ignore-next-line */
         if (is_iterable($color)) {
             $components = collect($color)->join(',');
             return Rgb::fromString("rgb($components)");
