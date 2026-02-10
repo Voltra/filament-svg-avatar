@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Voltra\FilamentSvgAvatar\Services;
 
 use Filament\Facades\Filament;
-use Filament\Support\Colors\Color as ColorsColor;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -208,20 +207,23 @@ class FilamentSvgAvatarService implements SvgAvatarServiceContract
         return $plugin instanceof FilamentSvgAvatarPlugin ? $plugin : null;
     }
 
-    protected function getDefaultBackgroundColor(): Color {
+    protected function getDefaultBackgroundColor(): Color
+    {
         $color = FilamentColor::getColors()['primary'][500];
 
         /* @phpstan-ignore-next-line */
         if (is_iterable($color)) {
             $components = collect($color)->join(',');
-            return Rgb::fromString("rgb($components)");
+
+            return Rgb::fromString("rgb({$components})");
         }
 
         if (str_starts_with($color, 'oklch(')) {
             $rgb = Utils::oklchToRgb($color);
+
             return Rgb::fromString($rgb);
         }
 
-        return Rgb::fromString("rgb($color)");
+        return Rgb::fromString("rgb({$color})");
     }
 }
