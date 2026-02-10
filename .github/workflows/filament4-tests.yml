@@ -1,5 +1,5 @@
 name: Filament v4 tests
-"on":
+on:
   push:
     branches:
       - main
@@ -30,12 +30,12 @@ jobs:
           - prefer-lowest
           - prefer-stable
         include:
-          - laravel: ^12.*
-            testbench: ^10.*
-          - laravel: ^12.*
-            testbench: ^10.*
-          - laravel: ^11.*
-            testbench: ^9.*
+          - laravel: 12.*
+            testbench: 10.*
+          - laravel: 12.*
+            testbench: 10.*
+          - laravel: 11.*
+            testbench: 9.*
     name: >-
       P${{ matrix.php }} - L${{ matrix.laravel }} - F4.* - C3 - ${{ matrix.stability }} - ${{ matrix.os }}
     steps:
@@ -61,7 +61,7 @@ jobs:
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
       - name: Install dependencies
         run: >-
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:^3.0" "filament/filament:^4.0" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:3.0" "filament/filament:4.0" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
       - name: List Installed Dependencies
         run: composer show -D
