@@ -28,10 +28,6 @@ jobs:
         carbon:
           - 3.0
           - 2.63
-        testbench:
-          - 10.*
-          - 9.*
-          - 8.*
         dependency-version:
           - prefer-lowest
           - prefer-stable
@@ -40,18 +36,12 @@ jobs:
           - prefer-stable
         include:
           - laravel: 12.*
-            testbench: 10.*
-            carbon: 3.0
-          - laravel: 12.*
-            testbench: 10.*
             carbon: 3.0
           - laravel: 11.*
-            testbench: 9.*
             carbon: 3.0
           - laravel: 10.*
-            testbench: 8.*
             carbon: 2.63
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - F3.* - C${{ matrix.carbon }} - T${{ matrix.testbench }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - F3.* - C${{ matrix.carbon }} - ${{ matrix.stability }} - ${{ matrix.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -72,7 +62,7 @@ jobs:
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" "filament/filament:3.*" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "nesbot/carbon:${{ matrix.carbon }}" "filament/filament:3.*" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
       - name: List Installed Dependencies
         run: composer show -D
