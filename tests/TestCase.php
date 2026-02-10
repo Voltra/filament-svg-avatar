@@ -15,6 +15,7 @@ use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
@@ -22,6 +23,8 @@ use Voltra\FilamentSvgAvatar\FilamentSvgAvatarServiceProvider;
 
 class TestCase extends Orchestra
 {
+    use MakesHttpRequests; // compat for Filament v3, v4 and v5
+
     protected function setUp(): void
     {
         parent::setUp();

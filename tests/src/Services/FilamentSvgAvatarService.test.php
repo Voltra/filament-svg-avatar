@@ -382,8 +382,8 @@ describe(FilamentSvgAvatarService::class, function () {
 
             public function __construct()
             {
-                $this->backgroundColor = Hex::fromString('#000');
-                $this->textColor = Hex::fromString('#fff');
+                $this->backgroundColor = Hex::fromString('#000000');
+                $this->textColor = Hex::fromString('#ffffff');
             }
         }
 
