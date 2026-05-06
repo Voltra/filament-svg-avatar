@@ -14,8 +14,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         stability: [prefer-stable, prefer-lowest]
+        laravel: ["12.*", "13.*"]
 
-    name: "${{ matrix.os }} - PHP 8.3 - Laravel 12 - Filament 5"
+    name: "${{ matrix.os }} - PHP 8.3 - Laravel ${{ matrix.laravel }} - Filament 5"
 
     steps:
       - uses: actions/checkout@v4
@@ -30,11 +31,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.composer/cache/files
-          key: composer-${{ matrix.os }}-filament5-${{ hashFiles('composer.json') }}
+          key: composer-${{ matrix.os }}-laravel${{ matrix.laravel }}-filament5-${{ hashFiles('composer.json') }}
 
       - name: Install dependencies
         run: |
-          composer require filament/filament:5.* laravel/framework:12.* orchestra/testbench:10.* --no-update
+          composer require filament/filament:5.* laravel/framework:${{ matrix.laravel }} --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Run tests
